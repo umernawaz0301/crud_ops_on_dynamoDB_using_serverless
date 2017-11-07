@@ -58,6 +58,17 @@ provider:
  
 
 functions:
+  create:
+    handler: api/candidate.hello
+    events:
+      - http:
+          path: hello
+          method: get
+          integration: lambda
+          cors: true
+          authorizer:
+            arn: arn:aws:cognito-idp:eu-central-1:902568610431:userpool/eu-central-1_hPyYOz9aj
+            
   candidateDetails:
     handler: api/candidate.get
     events:
@@ -81,7 +92,8 @@ functions:
           path: candidates_new
           method: post
   
-
+ 
+          
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
