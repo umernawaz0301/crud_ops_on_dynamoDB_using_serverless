@@ -21,29 +21,29 @@ provider:
   name: aws
   runtime: nodejs6.10
 
-# you can overwrite defaults here
+  # you can overwrite defaults here
   stage: dev
   region: eu-central-1
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  # you can add statements to the Lambda function's IAM Role here
+  #  iamRoleStatements:
+  #    - Effect: "Allow"
+  #      Action:
+  #        - "s3:ListBucket"
+  #      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+  #    - Effect: "Allow"
+  #      Action:
+  #        - "s3:PutObject"
+  #      Resource:
+  #        Fn::Join:
+  #          - ""
+  #          - - "arn:aws:s3:::"
+  #            - "Ref" : "ServerlessDeploymentBucket"
+  #            - "/*"
 
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  # you can define service wide environment variables here
+  #  environment:
+  #    variable1: value1
   environment:
     CANDIDATE_TABLE: ${self:service}-${opt:stage, self:provider.stage}-new
     CANDIDATE_EMAIL_TABLE: "candidate-email-${opt:stage, self:provider.stage}"
@@ -55,7 +55,6 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: "*"
- 
 
 functions:
   create:
@@ -67,8 +66,8 @@ functions:
           integration: lambda
           cors: true
           authorizer:
-            arn: arn:aws:cognito-idp:eu-central-1:902568610431:userpool/eu-central-1_hPyYOz9aj
-            
+            arn:
+
   candidateDetails:
     handler: api/candidate.get
     events:
@@ -80,7 +79,7 @@ functions:
     memorySize: 128
     description: List all candidates
     events:
-      - http: 
+      - http:
           path: candidates_list
           method: get
   candidateNew:
@@ -88,12 +87,10 @@ functions:
     memorySize: 128
     description: Submit candidate information and starts interview process.
     events:
-      - http: 
+      - http:
           path: candidates_new
           method: post
-  
- 
-          
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -130,16 +127,14 @@ functions:
 resources:
   Resources:
     CandidatesDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: "id"
-            AttributeType: "S"   
+          - AttributeName: "id"
+            AttributeType: "S"
         KeySchema:
-          -
-            AttributeName: "id"
+          - AttributeName: "id"
             KeyType: "HASH"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
